@@ -1,4 +1,5 @@
 import random, logging
+from collections import deque
 
 from django.db.models import ForeignKey, ManyToManyField, OneToOneField
 
@@ -183,7 +184,7 @@ class Seeder(object):
         :param faker: Generator
         """
         self.faker = faker
-        self.orders = []
+        self.orders = deque()
 
     def add_entity(self, model, number, customFieldFormatters=None):
         """
@@ -224,7 +225,7 @@ class Seeder(object):
 
         inserted_entities = {}
         while len(self.orders):
-            order = self.orders.pop(0)
+            order = self.orders.popleft()
             number = order["quantity"]
             klass = order["klass"]
             entity = order["entity"]
